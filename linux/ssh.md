@@ -10,14 +10,26 @@ SSH configuration with keys -> (public/private)
 > scp ~./ssh/id_amun.pub admin@amun:/home/admin/
 ```
 
-2. On server (will be delete afterwards)
+3. Server side
 ```
 > chmod -R 700 ~/.ssh
 > cat ~/id_amun.pub >> ~/.ssh/authorized_keys
 > rm  ~/id_amun.pub
+
+
+---Permit only key login---
+> sudo vi /etc/init.d/sshd_config
+PasswordAuthentication no
+ChallengeResponseAuthentication no
 ```
 
-3. Debug it
+4. Client side
 ```
-> ssh -v admin@amun
+> vi ~/.ssh/config
+Host amun
+User admin
+IdentityFile ~/.ssh/id_amun
+
+> ssh -v admin@amun (should ask for the passphrase)
+
 ```
